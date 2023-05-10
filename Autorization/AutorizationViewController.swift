@@ -18,6 +18,7 @@ final class AutorizationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         passwordTF.rightView = eyeOutlet
         passwordTF.rightViewMode = .always
         
@@ -37,21 +38,12 @@ final class AutorizationViewController: UIViewController {
         passwordTF.isSecureTextEntry = true
         
     }
-  
+    
     @IBAction func eyeAction() {
         passwordTF.isSecureTextEntry = !passwordTF.isSecureTextEntry
     }
     
     @IBAction func logInButton(_ sender: UIButton) {
-        
-        if userNameTF.text == "Matvei" && passwordTF.text == "Password" && sender.tag == 0 {
-            userName = "Welcome, \(userNameTF.text ?? "")"
-            
-        } else if  userNameTF.text != "Matvei" || passwordTF.text != "Password" && sender.tag == 0 {
-            showAlert(whithTitle: "Invalid login or password", andMessage: "Plese, enter correct login and password")
-            passwordTF.text = ""
-            
-        }
         
         if sender.tag == 1 {
             showAlert(whithTitle: "Oop!🤔", andMessage: "Your name is Matvei")
@@ -59,6 +51,27 @@ final class AutorizationViewController: UIViewController {
         } else if sender.tag == 2 {
             showAlert(whithTitle: "Oop!🤭", andMessage: "Your password is Password")
         }
+    }
+    // MARK: Override func
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        
+        guard userNameTF.text == "Matvei", passwordTF.text == "Password" else {
+            
+            showAlert(whithTitle: "Invalid login or password", andMessage: "Plese, enter correct login and password")
+            
+            passwordTF.text = ""
+            
+            return false
+        }
+        userName = "Welcome, \(userNameTF.text ?? "")"
+        
+        return true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
     }
     
 }
